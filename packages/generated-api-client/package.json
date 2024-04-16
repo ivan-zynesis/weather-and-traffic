@@ -1,8 +1,7 @@
 {
-  "name": "@repo/client-sdk",
+  "name": "@repo/generated-api-client",
   "version": "0.0.0",
-  "private": true,
-  "description": "OpenAPI client",
+  "description": "OpenAPI client for ",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
     "axios",

@@ -9,7 +9,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@repo/client-sdk": "workspace:*",
+    "@repo/generated-api-client": "workspace:*",
     "@repo/ui": "workspace:*",
     "autoprefixer": "^10.4.19",
     "next": "^14.1.1",

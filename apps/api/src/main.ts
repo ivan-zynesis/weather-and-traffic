@@ -11,7 +11,7 @@ async function bootstrap() {
   // setup Swagger
   const config = new DocumentBuilder()
     .setTitle('Weather Forecast and Traffic Monitoring')
-    .setVersion('1.0')
+    .setVersion('0.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

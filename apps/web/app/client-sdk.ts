@@ -1,4 +1,4 @@
-import {Configuration, StatusApi} from "@repo/client-sdk";
+import {Configuration, StatusApi} from "@repo/generated-api-client";
 
 export class Sdk {
   readonly status: StatusApi
@@ -10,11 +10,6 @@ export class Sdk {
 
 const config = new Configuration({
   basePath: 'http://localhost:3001',
-  baseOptions: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
 });
 
 /**
