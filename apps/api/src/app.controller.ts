@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+
+type Status = 'OK' | 'DOWN';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('status')
+  status(): Record<string, Status> {
+    return {
+      main: 'OK',
+      // TODO: external API provider health probes
+    };
   }
 }
