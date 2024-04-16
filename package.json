@@ -5,12 +5,14 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "codegen": "swagger-codegen generate -i http://localhost:3001/swagger-json -l typescript-axios -o packages/client-sdk"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "prettier": "^3.2.5",
+    "swagger-codegen": "^0.1.1",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.9.0",

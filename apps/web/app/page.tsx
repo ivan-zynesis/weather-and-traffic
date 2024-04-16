@@ -1,8 +1,12 @@
+'use client'
+
 import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { Code } from "@repo/ui/code";
 import styles from "./page.module.css";
 import { Button } from "@repo/ui/button";
+import {useSdk} from "../client-sdk";
+import {useEffect} from "react";
 
 function Gradient({
   conic,
@@ -52,6 +56,14 @@ const LINKS = [
 ];
 
 export default function Page(): JSX.Element {
+  const sdk = useSdk();
+
+  useEffect(() => {
+    sdk.status.statusControllerStatus().then(res => {
+      console.log('sdk read', res.data);
+    });
+  }, [])
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
