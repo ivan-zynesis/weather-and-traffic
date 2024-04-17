@@ -18,10 +18,20 @@
   justify-content: space-between;
 }
 
-.list {
+.listRowBox {
+  display: flex;
+  flex-direction: row;
   padding-left: 2rem;
   padding-right: 2rem;
   width: 90vw;
+  height: fit-content;
+  justify-content: space-between;
+}
+
+.list {
+  width: 65vw;
+  padding-left: 2rem;
+  padding-right: 2rem;
   min-height: 10rem;
   background-color: antiquewhite;
   border-radius: 0.5rem;
@@ -32,8 +42,14 @@
 
 }
 
+.weatherBox {
+  width: 16vw;
+  background-color: aquamarine;
+  align-content: center;
+}
+
 .trafficImage {
-  padding: 3rem;
+  padding: 5rem;
   width: 100vw;
   height: auto;
 }

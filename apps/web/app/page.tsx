@@ -24,7 +24,7 @@ export default function Page(): JSX.Element {
   useEffect(() => {
     // data mocking
     setTimeout(() => {
-      setListData(["abc", "def"]);
+      setListData(["lat: yyy, long: xxx", "lat: yyy, long: xxxx"]);
     }, 3000);
 
     // quick indicate the api is working
@@ -39,14 +39,18 @@ export default function Page(): JSX.Element {
         <div className={styles.dateTimePickerBar}>
           <DatePicker
             label="Date"
-            onChange={(newValue) => console.log("selected date:", newValue)}
+            onChange={(newValue) =>
+              console.log("selected date:", newValue?.toISOString())
+            }
           />
           <TimePicker
             label="Basic time picker"
-            onChange={(newValue) => console.log("selected time:", newValue)}
+            onChange={(newValue) =>
+              console.log("selected time:", newValue?.toISOString())
+            }
           />
         </div>
-        <div>
+        <div className={styles.listRowBox}>
           <List className={styles.list}>
             {listData.length === 0 ? (
               <span className={styles.description}>List is empty</span>
@@ -60,6 +64,9 @@ export default function Page(): JSX.Element {
               ))
             )}
           </List>
+          <div className={styles.weatherBox}>
+            <span className={styles.description}>Loading...</span>
+          </div>
         </div>
         <div>
           <Image
