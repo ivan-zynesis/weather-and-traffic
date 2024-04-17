@@ -1,7 +1,7 @@
-import {Configuration, StatusApi} from "@repo/generated-api-client";
+import { Configuration, StatusApi } from "@repo/generated-api-client";
 
 export class Sdk {
-  readonly status: StatusApi
+  readonly status: StatusApi;
 
   constructor(config: Configuration) {
     this.status = new StatusApi(config);
@@ -9,7 +9,7 @@ export class Sdk {
 }
 
 const config = new Configuration({
-  basePath: 'http://localhost:3001',
+  basePath: "http://localhost:3001",
 });
 
 /**

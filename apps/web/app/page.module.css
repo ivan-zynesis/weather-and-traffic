@@ -1,10 +1,57 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  background-color: white;
+}
+
+.dateTimePickerBar {
+  padding-left: 6rem;
+  padding-right: 6rem;
+  padding-bottom: 2rem;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.listRowBox {
+  display: flex;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  width: 90vw;
+  height: fit-content;
+  justify-content: space-between;
+}
+
+.list {
+  width: 65vw;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  min-height: 10rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  align-content: center;
+}
+
+.listItem {
+
+}
+
+.weatherBox {
+  width: 16vw;
+  background-color: aquamarine;
+  align-content: center;
+}
+
+.trafficImage {
+  padding: 5rem;
+  width: 100vw;
+  height: auto;
 }
 
 .vercelLogo {
@@ -14,12 +61,14 @@
 .description {
   display: inherit;
   justify-content: inherit;
-  align-items: inherit;
+  align-items: center;
+  text-align: center;
   font-size: 0.85rem;
   max-width: var(--max-width);
   width: 100%;
   z-index: 2;
   font-family: var(--font-mono);
+  color: black;
 }
 
 .description a {
