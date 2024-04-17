@@ -1,0 +1,16 @@
+{
+  "name": "@repo/postgres",
+  "version": "0.0.0",
+  "description": "Testcontainer postgres module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:postgres": "npx ts-node ./src/main.ts"
+  },
+  "private": true,
+  "dependencies": {
+    "@testcontainers/postgresql": "^10.8.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
