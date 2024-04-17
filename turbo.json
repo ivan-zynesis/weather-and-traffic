@@ -9,7 +9,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "dev:postgres": {},
     "dev": {
+      "dependsOn": ["dev:postgres"],
       "cache": false,
       "persistent": true
     }
