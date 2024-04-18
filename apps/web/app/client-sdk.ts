@@ -1,4 +1,8 @@
-import {Configuration, StatusApi, TrafficCamApi} from "@repo/generated-api-client";
+import {
+  Configuration,
+  StatusApi,
+  TrafficCamApi,
+} from "@repo/generated-api-client";
 
 /**
  * TODO: improvement

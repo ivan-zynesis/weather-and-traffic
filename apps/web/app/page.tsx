@@ -23,7 +23,9 @@ export default function Page(): JSX.Element {
 
   useEffect(() => {
     sdk.trafficCam.trafficCamControllerGet().then((res) => {
-      const locations = res.data.cameras.map(c => `lat: ${c.location.lat}, lng: ${c.location.lng}`);
+      const locations = res.data.cameras.map(
+        (c) => `lat: ${c.location.lat}, lng: ${c.location.lng}`,
+      );
       setListData(locations);
     });
   }, []);

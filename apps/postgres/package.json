@@ -4,15 +4,15 @@
   "description": "Testcontainer postgres module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc --outDir ./dist",
-    "test": "echo \"Message: no test for this package\" && exit 0",
-    "dev:postgres": "node ./dist/main.js"
+    "build": "tsc",
+    "test": "echo \"Message: no test for this package\" && exit 0"
   },
   "private": true,
   "dependencies": {
     "@testcontainers/postgresql": "^10.8.2"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "ts-node": "^10.9.2"
   }
 }

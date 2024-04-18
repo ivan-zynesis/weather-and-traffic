@@ -9,8 +9,7 @@ services:
     restart: always
     ports:
       - 3000:3000
-    networks:
-      - app_network
+
   api:
     container_name: api
     build:
@@ -19,11 +18,14 @@ services:
     restart: always
     ports:
       - 3001:3001
-    networks:
-      - app_network
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-networks:
-  app_network:
-    external: true
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=dev-db-password
+      - POSTGRES_USER=dev-db-user
+      - POSTGRES_DB=dev-db
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

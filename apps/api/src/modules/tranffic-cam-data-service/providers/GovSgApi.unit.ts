@@ -36,7 +36,7 @@ describe('GovSgApi', () => {
 
     for (let i = 1; i < combined.length; i += 1) {
       const prevRow = new Date(combined[i - 1]!.cursor).getTime();
-      const thisRow = new Date(combined[i ]!.cursor).getTime();
+      const thisRow = new Date(combined[i]!.cursor).getTime();
       expect(thisRow).toBeLessThanOrEqual(prevRow);
     }
   });
