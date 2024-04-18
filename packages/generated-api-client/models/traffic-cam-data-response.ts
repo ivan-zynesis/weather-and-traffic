@@ -12,41 +12,24 @@
  * Do not edit the class manually.
  */
 
+import { TrafficCamData } from './traffic-cam-data';
  /**
  * 
  *
  * @export
- * @interface StatusesResponse
+ * @interface TrafficCamDataResponse
  */
-export interface StatusesResponse {
+export interface TrafficCamDataResponse {
 
     /**
      * @type {string}
-     * @memberof StatusesResponse
+     * @memberof TrafficCamDataResponse
      */
-    main: StatusesResponseMainEnum;
+    timestamp?: string;
 
     /**
-     * @type {string}
-     * @memberof StatusesResponse
+     * @type {Array<TrafficCamData>}
+     * @memberof TrafficCamDataResponse
      */
-    db: StatusesResponseDbEnum;
+    cameras: Array<TrafficCamData>;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseMainEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseDbEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-

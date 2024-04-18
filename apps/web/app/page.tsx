@@ -22,14 +22,9 @@ export default function Page(): JSX.Element {
   const [listData, setListData] = useState<string[]>([]);
 
   useEffect(() => {
-    // data mocking
-    setTimeout(() => {
-      setListData(["lat: yyy, long: xxx", "lat: yyy, long: xxxx"]);
-    }, 3000);
-
-    // quick indicate the api is working
-    sdk.status.statusControllerStatus().then((res) => {
-      console.log("sdk read", res.data);
+    sdk.trafficCam.trafficCamControllerGet().then((res) => {
+      const locations = res.data.cameras.map(c => `lat: ${c.location.lat}, lng: ${c.location.lng}`);
+      setListData(locations);
     });
   }, []);
 

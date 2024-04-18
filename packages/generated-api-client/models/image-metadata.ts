@@ -16,37 +16,25 @@
  * 
  *
  * @export
- * @interface StatusesResponse
+ * @interface ImageMetadata
  */
-export interface StatusesResponse {
+export interface ImageMetadata {
+
+    /**
+     * @type {number}
+     * @memberof ImageMetadata
+     */
+    width?: number;
+
+    /**
+     * @type {number}
+     * @memberof ImageMetadata
+     */
+    height?: number;
 
     /**
      * @type {string}
-     * @memberof StatusesResponse
+     * @memberof ImageMetadata
      */
-    main: StatusesResponseMainEnum;
-
-    /**
-     * @type {string}
-     * @memberof StatusesResponse
-     */
-    db: StatusesResponseDbEnum;
+    md5?: string;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseMainEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseDbEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-

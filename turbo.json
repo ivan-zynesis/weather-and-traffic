@@ -6,12 +6,15 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
+    "test": {
+      "dependsOn": ["build"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
     "dev:postgres": {},
     "dev": {
-      "dependsOn": ["dev:postgres"],
+      "dependsOn": ["build","dev:postgres"],
       "cache": false,
       "persistent": true
     }

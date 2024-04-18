@@ -1,11 +1,6 @@
-import { orchestratePsqlContainer } from "./PostgresContainer";
-import { exec } from "child_process";
+import { exec } from 'child_process';
 
-exec("docker-compose up");
-
-// process.stdin.resume();
-//
-// orchestratePsqlContainer().then(container => {
-//   process.on('exit', () => container.stop());
-//   process.on('SIGINT', () => container.stop());
-// }).catch(e => console.error(`Failed to spin up postgres container ${e}`));
+/**
+ * For `turbo dev` use, spin up a postgres instance accessible from host machine
+ */
+exec('docker-compose up');

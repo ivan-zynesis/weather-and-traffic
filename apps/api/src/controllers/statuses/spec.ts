@@ -1,22 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StatusController } from './controller';
+import { DataSource } from 'typeorm';
 
 describe('StatusesController', () => {
+  let app: TestingModule;
   let controller: StatusController;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    app = await Test.createTestingModule({
       controllers: [StatusController],
-      providers: [],
+      providers: [
+        {
+          provide: DataSource,
+          useValue: {
+            isInitialized: true,
+          } as DataSource,
+        },
+      ],
     }).compile();
 
     controller = app.get(StatusController);
   });
 
+  afterAll(() => app.close());
+
   describe('statuses', () => {
-    it('should return "Hello World!"', () => {
-      expect(controller.status()).toStrictEqual({
+    it('should return healthiness of services', async () => {
+      expect(await controller.status()).toStrictEqual({
         main: 'OK',
+        db: 'OK',
       });
     });
   });
