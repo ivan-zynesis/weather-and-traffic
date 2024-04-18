@@ -1,33 +1,64 @@
 "use client";
 
-import * as React from "react";
+import "react";
 import styles from "./page.module.css";
-import { Button } from "@repo/ui/button";
+import { List } from "@repo/ui/list";
 import { useSdk } from "./client-sdk";
 import { useEffect, useState } from "react";
 
 import {
   DatePicker,
   LocalizationProvider,
+  PickerValidDate,
   TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Image from "next/image";
+
+interface LocationRow {
+  desc: string;
+  imgSrc: string;
+}
 
 export default function Page(): JSX.Element {
   const sdk = useSdk();
 
-  const [listData, setListData] = useState<string[]>([]);
+  const [fetchingState, setFetchingState] = useState<
+    "LOADING" | "LOADED" | "ERROR"
+  >("LOADING");
+  const [listData, setListData] = useState<Array<LocationRow>>([]);
+  const [selectedRow, setSelectedRow] = useState<LocationRow | null>(null);
+
+  const [selectedDate, setSelectedDate] = useState<PickerValidDate | null>(
+    null,
+  );
+  const [selectedTime, setSelectedTime] = useState<PickerValidDate | null>(
+    null,
+  );
+
+  const fetch = async () => {
+    const filter =
+      selectedDate === null || selectedTime === null
+        ? undefined
+        : `${selectedDate.toISOString().slice(0, 10)}T${selectedTime.toISOString().slice(11, 19)}`;
+
+    sdk.trafficCam
+      .trafficCamControllerGet(filter)
+      .then((res) => {
+        const list = res.data.cameras.map((c) => ({
+          desc: `lat: ${c.location.lat}, lng: ${c.location.lng}`,
+          imgSrc: c.image.src,
+        }));
+        setFetchingState("LOADED");
+        setListData(list);
+      })
+      .catch(() => {
+        setFetchingState("ERROR");
+      });
+  };
 
   useEffect(() => {
-    sdk.trafficCam.trafficCamControllerGet().then((res) => {
-      const locations = res.data.cameras.map(
-        (c) => `lat: ${c.location.lat}, lng: ${c.location.lng}`,
-      );
-      setListData(locations);
-    });
+    fetch();
   }, []);
 
   return (
@@ -36,48 +67,53 @@ export default function Page(): JSX.Element {
         <div className={styles.dateTimePickerBar}>
           <DatePicker
             label="Date"
-            onChange={(newValue) =>
-              console.log("selected date:", newValue?.toISOString())
-            }
+            onChange={(newValue) => setSelectedDate(newValue)}
+            value={selectedDate}
           />
           <TimePicker
-            label="Basic time picker"
-            onChange={(newValue) =>
-              console.log("selected time:", newValue?.toISOString())
-            }
+            className={styles.padLeft}
+            label="Time"
+            onChange={(newValue) => setSelectedTime(newValue)}
           />
+          <button
+            className={styles.button}
+            disabled={fetchingState !== "LOADED"}
+            onClick={() => fetch()}
+          >
+            Refetch
+          </button>
         </div>
         <div className={styles.listRowBox}>
-          <List className={styles.list}>
-            {listData.length === 0 ? (
-              <span className={styles.description}>List is empty</span>
-            ) : (
-              listData.map((data, index) => (
-                <ListItem>
-                  <span className={styles.description}>
-                    {index + 1}. {data}
-                  </span>
-                </ListItem>
-              ))
+          <List
+            state={fetchingState}
+            className={styles.list}
+            statusTextClassName={styles.description}
+            data={listData}
+            renderRow={(d, i) => (
+              <span
+                className={styles.description}
+                onClick={() => setSelectedRow(listData[i]!)}
+              >
+                {i + 1}. {d.desc}
+              </span>
             )}
-          </List>
+          />
           <div className={styles.weatherBox}>
             <span className={styles.description}>Loading...</span>
           </div>
         </div>
-        <div>
-          <Image
-            className={styles.trafficImage}
-            src="https://images.data.gov.sg/api/traffic-images/2024/04/8b749c44-8cd6-4f66-8184-69b4750a7199.jpg"
-            alt="fallback"
-            width="0"
-            height="0"
-            sizes="100vw"
-          />
-        </div>
-        <Button appName="web" className={styles.button}>
-          Click me!
-        </Button>
+        {selectedRow === null ? null : (
+          <div>
+            <Image
+              className={styles.trafficImage}
+              src={selectedRow.imgSrc}
+              alt="fallback"
+              width="0"
+              height="0"
+              sizes="100vw"
+            />
+          </div>
+        )}
       </main>
     </LocalizationProvider>
   );

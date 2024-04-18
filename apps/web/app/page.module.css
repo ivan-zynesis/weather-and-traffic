@@ -15,7 +15,7 @@
   width: 100vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .listRowBox {
@@ -25,7 +25,10 @@
   padding-right: 2rem;
   width: 90vw;
   height: fit-content;
-  justify-content: space-between;
+}
+
+.padLeft {
+  padding-left: 0.5rem;
 }
 
 .list {
@@ -354,9 +357,9 @@
 }
 
 .button {
-  background-color: #ffffff;
+  background-color: #fefefe;
   border-radius: 8px;
-  border-style: none;
+  border-style: solid;
   box-sizing: border-box;
   color: #000000;
   cursor: pointer;
@@ -365,14 +368,13 @@
   height: 40px;
   line-height: 20px;
   list-style: none;
-  margin: 0;
+  margin: 0.5rem;
   outline: none;
-  padding: 10px 16px;
   position: relative;
   text-align: center;
   text-decoration: none;
   transition: color 100ms;
-  vertical-align: baseline;
+  vertical-align: center;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
