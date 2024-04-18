@@ -12,41 +12,37 @@
  * Do not edit the class manually.
  */
 
+import { GeoLocation } from './geo-location';
+import { Image } from './image';
  /**
  * 
  *
  * @export
- * @interface StatusesResponse
+ * @interface TrafficCamData
  */
-export interface StatusesResponse {
+export interface TrafficCamData {
 
     /**
      * @type {string}
-     * @memberof StatusesResponse
+     * @memberof TrafficCamData
      */
-    main: StatusesResponseMainEnum;
+    cameraId: string;
 
     /**
      * @type {string}
-     * @memberof StatusesResponse
+     * @memberof TrafficCamData
      */
-    db: StatusesResponseDbEnum;
-}
+    cursor: string;
 
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseMainEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseDbEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
+    /**
+     * @type {Image}
+     * @memberof TrafficCamData
+     */
+    image: Image;
 
+    /**
+     * @type {GeoLocation}
+     * @memberof TrafficCamData
+     */
+    location: GeoLocation;
+}

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { Status, StatusesResponse } from './dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Status, StatusesResponse } from './dto';
 import { DataSource } from 'typeorm';
 
 @ApiTags('Status')

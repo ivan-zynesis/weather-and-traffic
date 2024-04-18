@@ -12,41 +12,24 @@
  * Do not edit the class manually.
  */
 
+import { ImageMetadata } from './image-metadata';
  /**
  * 
  *
  * @export
- * @interface StatusesResponse
+ * @interface Image
  */
-export interface StatusesResponse {
+export interface Image {
 
     /**
      * @type {string}
-     * @memberof StatusesResponse
+     * @memberof Image
      */
-    main: StatusesResponseMainEnum;
+    src: string;
 
     /**
-     * @type {string}
-     * @memberof StatusesResponse
+     * @type {ImageMetadata}
+     * @memberof Image
      */
-    db: StatusesResponseDbEnum;
+    metadata: ImageMetadata;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseMainEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseDbEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-

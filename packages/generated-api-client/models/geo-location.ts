@@ -16,37 +16,19 @@
  * 
  *
  * @export
- * @interface StatusesResponse
+ * @interface GeoLocation
  */
-export interface StatusesResponse {
+export interface GeoLocation {
 
     /**
-     * @type {string}
-     * @memberof StatusesResponse
+     * @type {number}
+     * @memberof GeoLocation
      */
-    main: StatusesResponseMainEnum;
+    lat: number;
 
     /**
-     * @type {string}
-     * @memberof StatusesResponse
+     * @type {number}
+     * @memberof GeoLocation
      */
-    db: StatusesResponseDbEnum;
+    lng: number;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseMainEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-/**
- * @export
- * @enum {string}
- */
-export enum StatusesResponseDbEnum {
-    OK = 'OK',
-    DOWN = 'DOWN'
-}
-

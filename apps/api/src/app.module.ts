@@ -3,6 +3,9 @@ import { StatusController } from './controllers/statuses/controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration } from './configuration';
+import { TrafficCamController } from './controllers/traffic-cam/controller';
+import { TelemetryModule } from './modules/telemetry/module';
+import { TrafficCamDataServiceModule } from './modules/tranffic-cam-data-service/module';
 
 @Module({
   imports: [
@@ -25,8 +28,10 @@ import { configuration } from './configuration';
       }),
       inject: [ConfigService],
     }),
+    TelemetryModule,
+    TrafficCamDataServiceModule,
   ],
-  controllers: [StatusController],
+  controllers: [StatusController, TrafficCamController],
   providers: [],
 })
 export class AppModule {}

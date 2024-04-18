@@ -1,10 +1,16 @@
-import { Configuration, StatusApi } from "@repo/generated-api-client";
+import {Configuration, StatusApi, TrafficCamApi} from "@repo/generated-api-client";
 
+/**
+ * TODO: improvement
+ * Updating of this class can be automated by watching `generated-api-client` package changes
+ */
 export class Sdk {
   readonly status: StatusApi;
+  readonly trafficCam: TrafficCamApi;
 
   constructor(config: Configuration) {
     this.status = new StatusApi(config);
+    this.trafficCam = new TrafficCamApi(config);
   }
 }
 

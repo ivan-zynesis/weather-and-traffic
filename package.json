@@ -4,16 +4,21 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "test": "turbo test",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "codegen": "swagger-codegen generate -i http://localhost:3001/swagger-json -l typescript-axios -o packages/generated-api-client"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
     "prettier": "^3.2.5",
     "swagger-codegen": "^0.1.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "ts-jest": "^29.1.2"
   },
   "packageManager": "pnpm@8.9.0",
   "engines": {

@@ -15,16 +15,13 @@ export const DefaultDevPostgresConfig: PostgresConfig = {
   port: 5432,
 };
 
+/**
+ * Spin up a testcontainer for automated (jest) use
+ */
 export async function orchestratePsqlContainer(
   config: PostgresConfig = DefaultDevPostgresConfig,
 ): Promise<StartedPostgreSqlContainer> {
   const postgresContainer = await new PostgreSqlContainer()
-    .withExtraHosts([
-      {
-        host: "host.docker.internal",
-        ipAddress: "0.0.0.0",
-      },
-    ])
     .withUsername(config.userName)
     .withPassword(config.password)
     .withExposedPorts(config.port)

@@ -17,20 +17,21 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { StatusesResponse } from '../models';
+import { TrafficCamDataResponse } from '../models';
 /**
- * StatusApi - axios parameter creator
+ * TrafficCamApi - axios parameter creator
  * @export
  */
-export const StatusApiAxiosParamCreator = function (configuration?: Configuration) {
+export const TrafficCamApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} [dateTime] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        statusControllerStatus: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/statuses`;
+        trafficCamControllerGet: async (dateTime?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/traffic-cameras`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -40,6 +41,10 @@ export const StatusApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (dateTime !== undefined) {
+                localVarQueryParameter['date_time'] = dateTime;
+            }
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -61,18 +66,19 @@ export const StatusApiAxiosParamCreator = function (configuration?: Configuratio
 };
 
 /**
- * StatusApi - functional programming interface
+ * TrafficCamApi - functional programming interface
  * @export
  */
-export const StatusApiFp = function(configuration?: Configuration) {
+export const TrafficCamApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} [dateTime] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async statusControllerStatus(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<StatusesResponse>>> {
-            const localVarAxiosArgs = await StatusApiAxiosParamCreator(configuration).statusControllerStatus(options);
+        async trafficCamControllerGet(dateTime?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TrafficCamDataResponse>>> {
+            const localVarAxiosArgs = await TrafficCamApiAxiosParamCreator(configuration).trafficCamControllerGet(dateTime, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -82,36 +88,38 @@ export const StatusApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * StatusApi - factory interface
+ * TrafficCamApi - factory interface
  * @export
  */
-export const StatusApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const TrafficCamApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
+         * @param {string} [dateTime] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async statusControllerStatus(options?: AxiosRequestConfig): Promise<AxiosResponse<StatusesResponse>> {
-            return StatusApiFp(configuration).statusControllerStatus(options).then((request) => request(axios, basePath));
+        async trafficCamControllerGet(dateTime?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<TrafficCamDataResponse>> {
+            return TrafficCamApiFp(configuration).trafficCamControllerGet(dateTime, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * StatusApi - object-oriented interface
+ * TrafficCamApi - object-oriented interface
  * @export
- * @class StatusApi
+ * @class TrafficCamApi
  * @extends {BaseAPI}
  */
-export class StatusApi extends BaseAPI {
+export class TrafficCamApi extends BaseAPI {
     /**
      * 
+     * @param {string} [dateTime] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof StatusApi
+     * @memberof TrafficCamApi
      */
-    public async statusControllerStatus(options?: AxiosRequestConfig) : Promise<AxiosResponse<StatusesResponse>> {
-        return StatusApiFp(this.configuration).statusControllerStatus(options).then((request) => request(this.axios, this.basePath));
+    public async trafficCamControllerGet(dateTime?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<TrafficCamDataResponse>> {
+        return TrafficCamApiFp(this.configuration).trafficCamControllerGet(dateTime, options).then((request) => request(this.axios, this.basePath));
     }
 }
