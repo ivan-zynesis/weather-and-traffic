@@ -1,7 +1,7 @@
-import {GovSgApi} from "./GovSgApi";
-import {LocalConsole} from "@repo/telemetry";
+import { GovSgApi } from './GovSgApi';
+import { LocalConsole } from '../../telemetry/providers/LocalConsole';
 
-let api = new GovSgApi(new LocalConsole());
+const api = new GovSgApi(new LocalConsole());
 
 describe('GovSgApi', () => {
   it('should provide a time series query of TrafficCamData', async () => {
@@ -15,7 +15,7 @@ describe('GovSgApi', () => {
 
     // expect to 'desc' ordered
     const combined = latest.concat(next);
-    combined.forEach(row => {
+    combined.forEach((row) => {
       expect(row).toStrictEqual({
         cameraId: expect.any(String),
         cursor: expect.any(String),

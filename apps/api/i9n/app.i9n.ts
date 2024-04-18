@@ -3,7 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+// FIXME: requires Testing TypeOrmModule provider
+describe.skip('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,11 +16,17 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  // FIXME: requires Testing TypeOrmModule provider
-  it.skip('/ (GET)', () => {
+  it('/GET statuses', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/statuses')
       .expect(200)
-      .expect('Hello World!');
+      .expect('TODO');
+  });
+
+  it('/GET traffic-cameras', () => {
+    return request(app.getHttpServer())
+      .get('/traffic-cameras')
+      .expect(200)
+      .expect('TODO');
   });
 });
