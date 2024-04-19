@@ -13,3 +13,4 @@
  */
 export * from "./apis/status-api";
 export * from "./apis/traffic-cam-api";
+export * from "./apis/weather-forecasts-api";

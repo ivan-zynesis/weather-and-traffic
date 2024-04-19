@@ -24,7 +24,7 @@ export interface TrafficCamDataResponse {
    * @type {string}
    * @memberof TrafficCamDataResponse
    */
-  timestamp?: string;
+  timestamp: string;
 
   /**
    * @type {Array<TrafficCamData>}

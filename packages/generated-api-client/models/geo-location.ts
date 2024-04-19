@@ -30,4 +30,10 @@ export interface GeoLocation {
    * @memberof GeoLocation
    */
   lng: number;
+
+  /**
+   * @type {string}
+   * @memberof GeoLocation
+   */
+  name: string;
 }
