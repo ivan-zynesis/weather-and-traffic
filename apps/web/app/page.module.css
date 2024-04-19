@@ -49,6 +49,7 @@
   width: 16vw;
   background-color: aquamarine;
   align-content: center;
+  max-height: 10rem;
 }
 
 .trafficImage {

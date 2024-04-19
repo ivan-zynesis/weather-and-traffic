@@ -5,7 +5,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configuration } from './configuration';
 import { TrafficCamController } from './controllers/traffic-cam/controller';
 import { TelemetryModule } from './modules/telemetry/module';
-import { TrafficCamDataServiceModule } from './modules/tranffic-cam-data-service/module';
+import { DataServiceModule } from './modules/data-service/module';
+import { WeatherForecastController } from './controllers/weather-forecast/controller';
+import { CacheServiceModule } from './modules/cache/module';
+import { ReverseGeocodingModule } from './modules/reverse-geocoding/module';
 
 @Module({
   imports: [
@@ -28,10 +31,16 @@ import { TrafficCamDataServiceModule } from './modules/tranffic-cam-data-service
       }),
       inject: [ConfigService],
     }),
+    CacheServiceModule,
     TelemetryModule,
-    TrafficCamDataServiceModule,
+    DataServiceModule,
+    ReverseGeocodingModule,
   ],
-  controllers: [StatusController, TrafficCamController],
+  controllers: [
+    StatusController,
+    TrafficCamController,
+    WeatherForecastController,
+  ],
   providers: [],
 })
 export class AppModule {}

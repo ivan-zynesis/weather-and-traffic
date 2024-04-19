@@ -14,10 +14,15 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Image from "next/image";
+import { Forecast } from "@repo/generated-api-client";
 
 interface LocationRow {
-  desc: string;
+  coordinate: {
+    lat: number;
+    lng: number;
+  };
   imgSrc: string;
+  locationName: string;
 }
 
 export default function Page(): JSX.Element {
@@ -26,7 +31,7 @@ export default function Page(): JSX.Element {
   const [fetchingState, setFetchingState] = useState<
     "LOADING" | "LOADED" | "ERROR"
   >("LOADING");
-  const [listData, setListData] = useState<Array<LocationRow>>([]);
+  const [locationRows, setLocationRows] = useState<Array<LocationRow>>([]);
   const [selectedRow, setSelectedRow] = useState<LocationRow | null>(null);
 
   const [selectedDate, setSelectedDate] = useState<PickerValidDate | null>(
@@ -36,7 +41,10 @@ export default function Page(): JSX.Element {
     null,
   );
 
-  const fetch = async () => {
+  const [forecasts, setForecasts] = useState<Forecast[]>([]);
+  const [selectedRowWeather, setSelectedRowWeather] = useState<string>("N/A");
+
+  const fetchTrafficCams = async () => {
     const filter =
       selectedDate === null || selectedTime === null
         ? undefined
@@ -46,20 +54,46 @@ export default function Page(): JSX.Element {
       .trafficCamControllerGet(filter)
       .then((res) => {
         const list = res.data.cameras.map((c) => ({
-          desc: `lat: ${c.location.lat}, lng: ${c.location.lng}`,
+          coordinate: {
+            lat: c.location.lat,
+            lng: c.location.lng,
+          },
+          locationName: c.location.name,
           imgSrc: c.image.src,
         }));
         setFetchingState("LOADED");
-        setListData(list);
+        setLocationRows(list);
       })
       .catch(() => {
         setFetchingState("ERROR");
       });
   };
 
+  const fetchWeatherForecasts = async () => {
+    sdk.weatherForecasts
+      .weatherForecastControllerGet()
+      .then((res) => {
+        setForecasts(res.data.forecasts);
+        // TODO: auto refetch after res.data.validPeriod
+      })
+      .catch(() => {
+        setSelectedRowWeather("Error");
+      });
+  };
+
   useEffect(() => {
-    fetch();
+    fetchTrafficCams();
+    fetchWeatherForecasts();
   }, []);
+
+  useEffect(() => {
+    const found = forecasts.find(
+      (forecast) => forecast.area === selectedRow?.locationName,
+    );
+    if (found) {
+      setSelectedRowWeather(found.forecast);
+    }
+  }, [forecasts, selectedRow]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -78,7 +112,7 @@ export default function Page(): JSX.Element {
           <button
             className={styles.button}
             disabled={fetchingState !== "LOADED"}
-            onClick={() => fetch()}
+            onClick={() => fetchTrafficCams()}
           >
             Refetch
           </button>
@@ -88,18 +122,23 @@ export default function Page(): JSX.Element {
             state={fetchingState}
             className={styles.list}
             statusTextClassName={styles.description}
-            data={listData}
+            data={locationRows}
             renderRow={(d, i) => (
               <span
                 className={styles.description}
-                onClick={() => setSelectedRow(listData[i]!)}
+                onClick={() => setSelectedRow(locationRows[i]!)}
               >
-                {i + 1}. {d.desc}
+                {i + 1}. ({d.coordinate.lat}, lng: {d.coordinate.lng}),
+                location: {d.locationName ?? "unknown"}
               </span>
             )}
           />
           <div className={styles.weatherBox}>
-            <span className={styles.description}>Loading...</span>
+            <span className={styles.description}>
+              {!selectedRow ? "Select a location" : selectedRow.locationName}
+              <br />
+              {selectedRowWeather}
+            </span>
           </div>
         </div>
         {selectedRow === null ? null : (

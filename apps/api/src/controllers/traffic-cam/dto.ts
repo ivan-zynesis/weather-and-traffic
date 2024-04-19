@@ -1,10 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TrafficCamData as TrafficCamDataI } from '../../modules/tranffic-cam-data-service/providers/type';
-
-export enum Status {
-  OK = 'OK',
-  DOWN = 'DOWN',
-}
+import { TrafficCamData as TrafficCamDataI } from '../../modules/data-service/providers/TrafficCamDataService';
 
 class GeoLocation {
   @ApiProperty({ type: Number })
@@ -12,6 +7,9 @@ class GeoLocation {
 
   @ApiProperty({ type: Number })
   lng: number;
+
+  @ApiProperty({ type: String })
+  name: string;
 }
 
 class ImageMetadata {
@@ -48,8 +46,8 @@ class TrafficCamData implements TrafficCamDataI {
 }
 
 export class TrafficCamDataResponse {
-  @ApiProperty({ required: false, type: String })
-  timestamp?: string;
+  @ApiProperty({ type: String })
+  timestamp: string;
 
   @ApiProperty({ type: [TrafficCamData] })
   cameras: TrafficCamData[];

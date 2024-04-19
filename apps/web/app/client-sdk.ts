@@ -2,6 +2,7 @@ import {
   Configuration,
   StatusApi,
   TrafficCamApi,
+  WeatherForecastsApi,
 } from "@repo/generated-api-client";
 
 /**
@@ -11,10 +12,12 @@ import {
 export class Sdk {
   readonly status: StatusApi;
   readonly trafficCam: TrafficCamApi;
+  readonly weatherForecasts: WeatherForecastsApi;
 
   constructor(config: Configuration) {
     this.status = new StatusApi(config);
     this.trafficCam = new TrafficCamApi(config);
+    this.weatherForecasts = new WeatherForecastsApi(config);
   }
 }
 
