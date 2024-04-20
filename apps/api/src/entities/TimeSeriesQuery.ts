@@ -1,15 +1,12 @@
-import { BaseEntity } from './Base';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
+import { BaseQueryEntity } from './BaseQuery';
 
 @Index('IDX_TimeSeriesQuery-type/selectedDateTime', [
   'type',
   'selectedDateTime',
 ])
 @Entity()
-export class TimeSeriesQueryEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  queryId!: string;
-
+export class TimeSeriesQueryEntity extends BaseQueryEntity {
   @Column({ type: 'timestamptz', update: false, nullable: false })
   selectedDateTime!: Date;
 

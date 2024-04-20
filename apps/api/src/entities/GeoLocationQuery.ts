@@ -1,11 +1,8 @@
-import { BaseEntity } from './Base';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseQueryEntity } from './BaseQuery';
 
 @Entity()
-export class GeoLocationQueryEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  queryId!: string;
-
+export class GeoLocationQueryEntity extends BaseQueryEntity {
   @Column({ type: 'text', update: false, nullable: false })
   location!: string;
 

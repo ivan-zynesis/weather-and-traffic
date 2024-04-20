@@ -116,7 +116,7 @@ describe('MemoryCacheProvider', () => {
       });
       expect(diffFilterB.data).not.toStrictEqual(first.data);
 
-      mock.defaults.baseURL = 'changedUrl';
+      mock.defaults.baseURL = `changedUrl+${Math.floor(Math.random() * 1e6)}`;
       const differentUrl = cache.cachedAxiosGetClient(mock);
 
       const shouldNotBeCached = await differentUrl.get('urlOne', {
