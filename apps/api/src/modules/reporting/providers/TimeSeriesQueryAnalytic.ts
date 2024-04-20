@@ -20,6 +20,10 @@ export class TimeSeriesQueryAnalytic {
     return created;
   }
 
+  /**
+   * This implementation here is rather simple, a hybrid of sql approach + post-processing for rolling window sum.
+   * Since we do not know exactly how the API has to expand, quickly build whatever fit the collected requirement
+   */
   async selectMostQueried(
     type: string,
     start: string,
@@ -46,9 +50,6 @@ export class TimeSeriesQueryAnalytic {
       blockTime: new Date(d.blockTime).toISOString(),
       count: parseInt(d.count),
     }));
-
-    // console.log('========== minuteGroupCount ===========')
-    // console.log(minuteGroupCount)
 
     const fullSeries = leftJoin(
       generateTimeSeries(new Date(start), new Date(end), 'minute'),
