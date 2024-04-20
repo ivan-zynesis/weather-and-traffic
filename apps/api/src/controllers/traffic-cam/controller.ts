@@ -1,9 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { TrafficCamDataResponse } from './dto';
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrafficCamDataService } from '../../modules/data-service/providers/TrafficCamDataService';
 import { ReverseGeocodingService } from '../../modules/reverse-geocoding/providers/abstract';
 import { TimeSeriesQueryAnalytic } from '../../modules/reporting/providers/TimeSeriesQueryAnalytic';
+import { TimeSeriesQueryAnalyticService } from '../../modules/reporting/module';
 
 @ApiTags('traffic-cam')
 @Controller()
@@ -11,6 +12,7 @@ export class TrafficCamController {
   constructor(
     private readonly dataService: TrafficCamDataService,
     private readonly reverseGeocodingService: ReverseGeocodingService,
+    @Inject(TimeSeriesQueryAnalyticService)
     private readonly timeSeriesAnalytic: TimeSeriesQueryAnalytic,
   ) {}
 
@@ -22,7 +24,7 @@ export class TrafficCamController {
   ): Promise<TrafficCamDataResponse> {
     await this.timeSeriesAnalytic.log({
       type: 'traffic-cam',
-      selectedDateTime: new Date(cursor),
+      selectedDateTime: cursor ? new Date(cursor) : new Date(),
     });
 
     const data = await this.dataService.query(cursor);
