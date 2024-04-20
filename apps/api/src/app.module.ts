@@ -9,6 +9,9 @@ import { DataServiceModule } from './modules/data-service/module';
 import { WeatherForecastController } from './controllers/weather-forecast/controller';
 import { CacheServiceModule } from './modules/cache/module';
 import { ReverseGeocodingModule } from './modules/reverse-geocoding/module';
+import { TimeSeriesQueryEntity } from './entities/TimeSeriesQuery';
+import { GeoLocationQueryEntity } from './entities/GeoLocationQuery';
+import { ReportingModule } from './modules/reporting/module';
 
 @Module({
   imports: [
@@ -25,7 +28,7 @@ import { ReverseGeocodingModule } from './modules/reverse-geocoding/module';
         database: config.get('db.database'),
         username: config.get('db.user'),
         password: config.get('db.password'),
-        entities: [],
+        entities: [TimeSeriesQueryEntity, GeoLocationQueryEntity],
         // TODO: db migration
         synchronize: true,
       }),
@@ -35,6 +38,7 @@ import { ReverseGeocodingModule } from './modules/reverse-geocoding/module';
     TelemetryModule,
     DataServiceModule,
     ReverseGeocodingModule,
+    ReportingModule,
   ],
   controllers: [
     StatusController,

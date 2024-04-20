@@ -3,6 +3,7 @@ import { TrafficCamDataResponse } from './dto';
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrafficCamDataService } from '../../modules/data-service/providers/TrafficCamDataService';
 import { ReverseGeocodingService } from '../../modules/reverse-geocoding/providers/abstract';
+import { TimeSeriesQueryAnalytic } from '../../modules/reporting/providers/TimeSeriesQueryAnalytic';
 
 @ApiTags('traffic-cam')
 @Controller()
@@ -10,6 +11,7 @@ export class TrafficCamController {
   constructor(
     private readonly dataService: TrafficCamDataService,
     private readonly reverseGeocodingService: ReverseGeocodingService,
+    private readonly timeSeriesAnalytic: TimeSeriesQueryAnalytic,
   ) {}
 
   @ApiQuery({ name: 'date_time', required: false, type: String })
@@ -18,6 +20,11 @@ export class TrafficCamController {
   async get(
     @Query('date_time') cursor?: string,
   ): Promise<TrafficCamDataResponse> {
+    await this.timeSeriesAnalytic.log({
+      type: 'traffic-cam',
+      selectedDateTime: new Date(cursor),
+    });
+
     const data = await this.dataService.query(cursor);
 
     // reverse geocoding, need to think deeper for more performant solution

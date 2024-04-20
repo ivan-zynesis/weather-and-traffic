@@ -8,6 +8,7 @@ module.exports = {
         '**/*.unit.ts',
         '**/spec.ts',
         '**/*.spec.ts',
-        '**/*.i9n.ts'
+        '**/*.i9n.ts',
+        '**/*.e2e.ts',
     ]
 };
