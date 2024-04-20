@@ -18,4 +18,9 @@ export const configuration = () => ({
       ? parseInt(process.env.DB_PORT)
       : DefaultDevPostgresConfig.port,
   },
+  apiKeys: {
+    google: {
+      reverseGeocoding: process.env.GOOGLE_REV_GEOCODING_API_KEY,
+    },
+  },
 });
