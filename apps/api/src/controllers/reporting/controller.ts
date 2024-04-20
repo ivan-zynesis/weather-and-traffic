@@ -20,7 +20,7 @@ export class ReportingController {
   })
   @ApiResponse({ type: TimeSeriesMostQueriedResponse })
   @Get('/time-series/most-queried')
-  async status(
+  async highestQueriedParamWithMovingOneHourBlock(
     @Query('start') start: string,
     @Query('end') end: string,
   ): Promise<TimeSeriesMostQueriedResponse> {
@@ -35,4 +35,7 @@ export class ReportingController {
       selectedDateTime: mostQueriedTimestamp,
     };
   }
+
+  // TODO: recent queries
+  // TODO: top 10 queries params
 }
