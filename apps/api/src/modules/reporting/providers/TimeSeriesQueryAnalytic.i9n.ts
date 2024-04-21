@@ -5,7 +5,6 @@ import { TimeSeriesQueryAnalytic } from './TimeSeriesQueryAnalytic';
 import { DataSource, Repository } from 'typeorm';
 import { TimeSeriesQueryEntity } from '../../../entities/TimeSeriesQuery';
 
-// FIXME: at the moment all e2e requires postgres manual spin up
 describe('TimeSeriesQueryAnalyticService)', () => {
   let provider: TimeSeriesQueryAnalytic;
   let repo: Repository<TimeSeriesQueryEntity>;
