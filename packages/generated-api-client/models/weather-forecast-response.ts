@@ -12,7 +12,6 @@
  * Do not edit the class manually.
  */
 
-import { Forecast } from "./forecast";
 /**
  *
  *
@@ -24,23 +23,11 @@ export interface WeatherForecastResponse {
    * @type {string}
    * @memberof WeatherForecastResponse
    */
-  timestamp: string;
+  area: string;
 
   /**
    * @type {string}
    * @memberof WeatherForecastResponse
    */
-  updateTimestamp: string;
-
-  /**
-   * @type {string}
-   * @memberof WeatherForecastResponse
-   */
-  validPeriod: string;
-
-  /**
-   * @type {Array<Forecast>}
-   * @memberof WeatherForecastResponse
-   */
-  forecasts: Array<Forecast>;
+  forecast: string;
 }

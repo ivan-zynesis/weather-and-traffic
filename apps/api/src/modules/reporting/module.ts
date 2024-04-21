@@ -5,6 +5,7 @@ import { TimeSeriesQueryEntity } from '../../entities/TimeSeriesQuery';
 import { RecentQueriesAnalytic } from './providers/RecentQueriesAnalytic';
 import { TopQueriesAnalytic } from './providers/TopQueriesAnalytic';
 import { GeoLocationQueryEntity } from '../../entities/GeoLocationQuery';
+import { QueryLogger } from './providers/QueryLogger';
 
 export const RecentQueriesAnalyticService = 'RecentQueriesAnalyticService';
 export const TopQueriesAnalyticService = 'TopQueriesAnalyticService';
@@ -15,6 +16,7 @@ export const TimeSeriesQueryAnalyticService = 'TimeSeriesQueryAnalyticService';
     TypeOrmModule.forFeature([TimeSeriesQueryEntity, GeoLocationQueryEntity]),
   ],
   providers: [
+    QueryLogger,
     {
       provide: RecentQueriesAnalyticService,
       useClass: RecentQueriesAnalytic,
@@ -29,6 +31,7 @@ export const TimeSeriesQueryAnalyticService = 'TimeSeriesQueryAnalyticService';
     },
   ],
   exports: [
+    QueryLogger,
     RecentQueriesAnalyticService,
     TopQueriesAnalyticService,
     TimeSeriesQueryAnalyticService,

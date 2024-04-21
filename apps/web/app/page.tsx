@@ -3,6 +3,7 @@
 import "react";
 import styles from "./page.module.css";
 import { List } from "@repo/ui/list";
+import { WeatherBox } from "@repo/ui/weather-box";
 import { useSdk } from "./client-sdk";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,6 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Image from "next/image";
-import { Forecast } from "@repo/generated-api-client";
 
 interface LocationRow {
   coordinate: {
@@ -22,7 +22,6 @@ interface LocationRow {
     lng: number;
   };
   imgSrc: string;
-  locationName: string;
 }
 
 export default function Page(): JSX.Element {
@@ -41,8 +40,13 @@ export default function Page(): JSX.Element {
     null,
   );
 
-  const [forecasts, setForecasts] = useState<Forecast[]>([]);
-  const [selectedRowWeather, setSelectedRowWeather] = useState<string>("N/A");
+  const [fetchingWeatherState, setFetchingWeatherState] = useState<
+    "IDLE" | "LOADING" | "ERROR"
+  >("IDLE");
+  const [selectedRowWeather, setSelectedRowWeather] = useState<{
+    area: string;
+    forecast: string;
+  } | null>(null);
 
   const fetchTrafficCams = async () => {
     const filter =
@@ -69,31 +73,33 @@ export default function Page(): JSX.Element {
       });
   };
 
-  const fetchWeatherForecasts = async () => {
+  const fetchWeatherForecast = async (coordinate: {
+    lat: number;
+    lng: number;
+  }) => {
     sdk.weatherForecasts
-      .weatherForecastControllerGet()
+      .weatherForecastControllerGet(`${coordinate.lat},${coordinate.lng}`)
       .then((res) => {
-        setForecasts(res.data.forecasts);
-        // TODO: auto refetch after res.data.validPeriod
+        setFetchingWeatherState("IDLE");
+        setSelectedRowWeather(res.data);
       })
       .catch(() => {
-        setSelectedRowWeather("Error");
+        setFetchingWeatherState("ERROR");
+        setSelectedRowWeather(null);
       });
   };
 
   useEffect(() => {
     fetchTrafficCams();
-    fetchWeatherForecasts();
   }, []);
 
   useEffect(() => {
-    const found = forecasts.find(
-      (forecast) => forecast.area === selectedRow?.locationName,
-    );
-    if (found) {
-      setSelectedRowWeather(found.forecast);
+    if (!selectedRow) {
+      return;
     }
-  }, [forecasts, selectedRow]);
+    setFetchingWeatherState("LOADING");
+    void fetchWeatherForecast(selectedRow.coordinate);
+  }, [selectedRow]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -128,18 +134,18 @@ export default function Page(): JSX.Element {
                 className={styles.description}
                 onClick={() => setSelectedRow(locationRows[i]!)}
               >
-                {i + 1}. ({d.coordinate.lat}, lng: {d.coordinate.lng}),
-                location: {d.locationName ?? "unknown"}
+                {i + 1}. ({d.coordinate.lat}, lng: {d.coordinate.lng})
               </span>
             )}
           />
-          <div className={styles.weatherBox}>
-            <span className={styles.description}>
-              {!selectedRow ? "Select a location" : selectedRow.locationName}
-              <br />
-              {selectedRowWeather}
-            </span>
-          </div>
+          {
+            <WeatherBox
+              containerClassName={styles.weatherBox}
+              spanClassName={styles.description}
+              queryState={fetchingWeatherState}
+              data={selectedRowWeather}
+            />
+          }
         </div>
         {selectedRow === null ? null : (
           <div>
