@@ -1,24 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TimeSeriesQueryEntity } from '../../../entities/TimeSeriesQuery';
-
-type NewQuery = Pick<TimeSeriesQueryEntity, 'type' | 'selectedDateTime'>;
 
 @Injectable()
 export class TimeSeriesQueryAnalytic {
   constructor(
-    private readonly dataSource: DataSource,
-
     @InjectRepository(TimeSeriesQueryEntity)
     private readonly repo: Repository<TimeSeriesQueryEntity>,
   ) {}
-
-  async log(query: NewQuery): Promise<TimeSeriesQueryEntity> {
-    const created = this.repo.create(query);
-    await this.repo.insert(created);
-    return created;
-  }
 
   /**
    * This implementation here is rather simple, a hybrid of sql approach + post-processing for rolling window sum.

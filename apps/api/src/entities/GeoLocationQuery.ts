@@ -3,18 +3,12 @@ import { BaseQueryEntity } from './abstract/BaseQuery';
 
 @Entity()
 export class GeoLocationQueryEntity extends BaseQueryEntity {
-  @Column({ type: 'text', update: false, nullable: false })
-  location!: string;
-
-  @Column({ type: 'decimal' })
-  latitude!: number;
-
-  @Column({ type: 'decimal' })
-  longitude!: number;
+  @Column({ type: 'text', update: false, nullable: true })
+  location!: string | null;
 
   @Column({ type: 'text' })
-  type!: string;
+  latLng!: string;
 
-  @Column({ type: 'jsonb' })
-  metadata!: Record<string, any>;
+  @Column({ type: 'jsonb', nullable: true })
+  metadata!: Record<string, any> | null;
 }

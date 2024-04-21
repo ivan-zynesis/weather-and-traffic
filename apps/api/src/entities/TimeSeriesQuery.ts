@@ -9,7 +9,4 @@ import { BaseQueryEntity } from './abstract/BaseQuery';
 export class TimeSeriesQueryEntity extends BaseQueryEntity {
   @Column({ type: 'timestamptz', update: false, nullable: false })
   selectedDateTime!: Date;
-
-  @Column({ type: 'text' })
-  type!: string;
 }

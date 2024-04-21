@@ -1,17 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../app.module';
-import {
-  RecentQueriesAnalyticService,
-  TimeSeriesQueryAnalyticService,
-} from '../module';
-import { TimeSeriesQueryAnalytic } from './TimeSeriesQueryAnalytic';
+import { RecentQueriesAnalyticService } from '../module';
 import { DataSource, Repository } from 'typeorm';
 import { TimeSeriesQueryEntity } from '../../../entities/TimeSeriesQuery';
 import { RecentQueriesAnalytic } from './RecentQueriesAnalytic';
+import { QueryLogger } from './QueryLogger';
 
 describe('RecentQueriesAnalyticService)', () => {
   let provider: RecentQueriesAnalytic;
-  let queryLogger: TimeSeriesQueryAnalytic;
+  let queryLogger: QueryLogger;
   let repo: Repository<TimeSeriesQueryEntity>;
 
   beforeAll(async () => {
@@ -23,7 +20,7 @@ describe('RecentQueriesAnalyticService)', () => {
     await app.init();
 
     provider = moduleFixture.get(RecentQueriesAnalyticService);
-    queryLogger = moduleFixture.get(TimeSeriesQueryAnalyticService);
+    queryLogger = moduleFixture.get(QueryLogger);
     repo = moduleFixture.get(DataSource).getRepository(TimeSeriesQueryEntity);
   });
 
@@ -37,11 +34,11 @@ describe('RecentQueriesAnalyticService)', () => {
       const ts = `2023-09-05T00:00:${second}.000Z`;
 
       // insert twice, only distinct row
-      await queryLogger.log({
+      await queryLogger.log(TimeSeriesQueryEntity, {
         type: 'TestSumOverMovingWindow',
         selectedDateTime: new Date(ts),
       });
-      await queryLogger.log({
+      await queryLogger.log(TimeSeriesQueryEntity, {
         type: 'TestSumOverMovingWindow',
         selectedDateTime: new Date(ts),
       });

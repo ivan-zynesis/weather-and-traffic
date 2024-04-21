@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   RecentQueriedParameterResponse,
@@ -14,6 +14,11 @@ import {
   TopQueriesAnalyticService,
 } from '../../modules/reporting/module';
 import { TopQueriesAnalytic } from '../../modules/reporting/providers/TopQueriesAnalytic';
+import { GeoLocationQueryEntity } from '../../entities/GeoLocationQuery';
+import {
+  BaseQueryEntity,
+  SupportedQueryType,
+} from '../../entities/abstract/BaseQuery';
 
 @ApiTags('Reporting')
 @Controller('reporting')
@@ -57,42 +62,64 @@ export class ReportingController {
   }
 
   @ApiResponse({ type: TimeSeriesMostQueriedResponse })
-  @Get('/recent/traffic-camera-datetime')
-  async recentQueries(): Promise<RecentQueriedParameterResponse> {
-    const onlySupportedTypeAtm = TimeSeriesQueryEntity;
+  @Get('/recent/:api')
+  async recentQueries(
+    @Param('api') api: string,
+  ): Promise<RecentQueriedParameterResponse> {
+    const spec = getQuerySpec(api);
     const mostQueriedTimestamps =
       await this.recentQueriesAnalytic.getRecentQueries(
-        onlySupportedTypeAtm,
-        'selectedDateTime',
+        spec.entityClass,
+        spec.field,
       );
     return {
       queriedParameters: mostQueriedTimestamps.map((ts) => ({
-        queriedParameterValue: ts.selectedDateTime.toISOString(),
+        queriedParameterValue: ts[spec.field].toString(),
         createdAt: ts.createdAt,
       })),
     };
   }
 
   @ApiResponse({ type: TopQueriedParameterResponse })
-  @Get('/top/traffic-camera-datetime')
+  @Get('/top/:api')
   async topQueries(
+    @Param('api') api: string,
     @Query('start') start: string,
     @Query('end') end: string,
   ): Promise<TopQueriedParameterResponse> {
-    const onlySupportedTypeAtm = TimeSeriesQueryEntity;
+    const spec = getQuerySpec(api);
     const mostQueriedTimestamps = await this.topQueriesAnalytic.getTopQueries(
-      onlySupportedTypeAtm,
-      'selectedDateTime',
+      spec.entityClass,
+      spec.field,
       start,
       end,
     );
     return {
       topQueriedParameters: mostQueriedTimestamps.map((ts) => ({
-        queriedParameterValue: ts.selectedDateTime.toISOString(),
+        queriedParameterValue: ts[spec.field].toString(),
         count: ts.count,
       })),
     };
   }
+}
 
-  // TODO: top 10 queries params
+function getQuerySpec<E extends BaseQueryEntity, Key extends keyof E>(
+  api: string,
+): { entityClass: new () => E; field: Key } {
+  let ent: new () => BaseQueryEntity;
+  let field: string;
+  switch (api) {
+    case 'traffic-cam' as SupportedQueryType:
+      ent = TimeSeriesQueryEntity;
+      field = 'selectedDateTime';
+      break;
+    case 'weather-forecast' as SupportedQueryType:
+      ent = GeoLocationQueryEntity;
+      field = 'latLng';
+      break;
+    default:
+      throw new Error('Unknown API type');
+  }
+
+  return { entityClass: ent as any, field: field as any };
 }

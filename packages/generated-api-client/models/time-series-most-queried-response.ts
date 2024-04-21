@@ -11,7 +11,27 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-export * from "./apis/reporting-api";
-export * from "./apis/status-api";
-export * from "./apis/traffic-cam-api";
-export * from "./apis/weather-forecasts-api";
+
+/**
+ *
+ *
+ * @export
+ * @interface TimeSeriesMostQueriedResponse
+ */
+export interface TimeSeriesMostQueriedResponse {
+  /**
+   * Queries type, eg \"traffic-camera
+   *
+   * @type {string}
+   * @memberof TimeSeriesMostQueriedResponse
+   */
+  type: string;
+
+  /**
+   * Queried parameter's value
+   *
+   * @type {string}
+   * @memberof TimeSeriesMostQueriedResponse
+   */
+  selectedDateTime: string;
+}

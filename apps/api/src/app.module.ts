@@ -14,6 +14,7 @@ import { GeoLocationQueryEntity } from './entities/GeoLocationQuery';
 import { ReportingModule } from './modules/reporting/module';
 import { migrations } from './database/migrations';
 import { ReportingController } from './controllers/reporting/controller';
+import { WeatherForecastModule } from './modules/weather-forecast/module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ReportingController } from './controllers/reporting/controller';
     DataServiceModule,
     ReverseGeocodingModule,
     ReportingModule,
+    WeatherForecastModule,
   ],
   controllers: [
     StatusController,

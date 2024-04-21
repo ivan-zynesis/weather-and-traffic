@@ -1,17 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../app.module';
-import {
-  TimeSeriesQueryAnalyticService,
-  TopQueriesAnalyticService,
-} from '../module';
-import { TimeSeriesQueryAnalytic } from './TimeSeriesQueryAnalytic';
+import { TopQueriesAnalyticService } from '../module';
 import { DataSource, Repository } from 'typeorm';
 import { TimeSeriesQueryEntity } from '../../../entities/TimeSeriesQuery';
 import { TopQueriesAnalytic } from './TopQueriesAnalytic';
+import { QueryLogger } from './QueryLogger';
 
 describe('TopQueriesAnalyticService)', () => {
   let provider: TopQueriesAnalytic;
-  let queryLogger: TimeSeriesQueryAnalytic;
+  let queryLogger: QueryLogger;
   let repo: Repository<TimeSeriesQueryEntity>;
 
   beforeAll(async () => {
@@ -23,7 +20,7 @@ describe('TopQueriesAnalyticService)', () => {
     await app.init();
 
     provider = moduleFixture.get(TopQueriesAnalyticService);
-    queryLogger = moduleFixture.get(TimeSeriesQueryAnalyticService);
+    queryLogger = moduleFixture.get(QueryLogger);
     repo = moduleFixture.get(DataSource).getRepository(TimeSeriesQueryEntity);
   });
 
@@ -40,7 +37,7 @@ describe('TopQueriesAnalyticService)', () => {
       const ts = `2023-09-05T00:00:${second}.000Z`;
 
       for (let j = 0; j < i; j += 1) {
-        await queryLogger.log({
+        await queryLogger.log(TimeSeriesQueryEntity, {
           type: 'TestTopQueries',
           selectedDateTime: new Date(ts),
         });

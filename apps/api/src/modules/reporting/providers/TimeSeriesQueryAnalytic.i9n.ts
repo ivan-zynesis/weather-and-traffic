@@ -4,9 +4,11 @@ import { TimeSeriesQueryAnalyticService } from '../module';
 import { TimeSeriesQueryAnalytic } from './TimeSeriesQueryAnalytic';
 import { DataSource, Repository } from 'typeorm';
 import { TimeSeriesQueryEntity } from '../../../entities/TimeSeriesQuery';
+import { QueryLogger } from './QueryLogger';
 
 describe('TimeSeriesQueryAnalyticService)', () => {
   let provider: TimeSeriesQueryAnalytic;
+  let queryLogger: QueryLogger;
   let repo: Repository<TimeSeriesQueryEntity>;
 
   beforeAll(async () => {
@@ -18,6 +20,7 @@ describe('TimeSeriesQueryAnalyticService)', () => {
     await app.init();
 
     provider = moduleFixture.get(TimeSeriesQueryAnalyticService);
+    queryLogger = moduleFixture.get(QueryLogger);
     repo = moduleFixture.get(DataSource).getRepository(TimeSeriesQueryEntity);
   });
 
@@ -27,7 +30,7 @@ describe('TimeSeriesQueryAnalyticService)', () => {
 
   it('log', async () => {
     const isoString = '2024-01-23T12:34:56.789Z';
-    await provider.log({
+    await queryLogger.log(TimeSeriesQueryEntity, {
       type: 'TestLog',
       selectedDateTime: new Date(isoString),
     });
@@ -59,7 +62,7 @@ describe('TimeSeriesQueryAnalyticService)', () => {
 
     await Promise.all(
       fixture.map(async (dateIsoString) => {
-        await provider.log({
+        await queryLogger.log(TimeSeriesQueryEntity, {
           type: 'TestSumOverMovingWindow',
           selectedDateTime: new Date(dateIsoString),
         });

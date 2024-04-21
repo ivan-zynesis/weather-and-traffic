@@ -1,24 +1,60 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { WeatherForecastResponse } from './dto';
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { WeatherDataService } from '../../modules/data-service/providers/WeatherDataService';
+import { Coordinate } from '../../modules/reverse-geocoding/providers/abstract';
+import { WeatherForecastService } from '../../modules/weather-forecast/providers/WeatherForecastService';
+import { QueryLogger } from '../../modules/reporting/providers/QueryLogger';
+import { GeoLocationQueryEntity } from '../../entities/GeoLocationQuery';
 
 @ApiTags('Weather Forecasts')
 @Controller()
 export class WeatherForecastController {
-  constructor(private readonly dataService: WeatherDataService) {}
+  constructor(
+    private readonly service: WeatherForecastService,
+    private readonly queryLogger: QueryLogger,
+  ) {}
 
-  @ApiQuery({ name: 'date_time', required: false, type: String })
-  @ApiQuery({ name: 'date', required: false, type: String })
+  @ApiQuery({
+    name: 'coordinate',
+    required: true,
+    type: String,
+    description: '<lat>,<lng>',
+  })
   @ApiResponse({ type: WeatherForecastResponse })
   @Get('weather-forecast')
   async get(
-    @Query('date_time') dateTime?: string,
-    @Query('date') date?: string,
+    @Query('coordinate') latLng: string,
   ): Promise<WeatherForecastResponse> {
-    return this.dataService.getForecasts({
-      date,
-      date_time: dateTime,
-    });
+    const coordinate = validateCoordinate(latLng);
+    try {
+      const forecast = await this.service.getForecast(coordinate);
+      await this.queryLogger.log(GeoLocationQueryEntity, {
+        type: 'weather-forecast',
+        location: forecast.area,
+        latLng,
+      });
+      return forecast;
+    } catch (e: any) {
+      await this.queryLogger.log(GeoLocationQueryEntity, {
+        type: 'weather-forecast',
+        latLng,
+      });
+      throw e;
+    }
   }
+}
+
+/**
+ * TODO proper validation pipe
+ */
+function validateCoordinate(latLng: string): Coordinate {
+  const split = latLng.split(',');
+  if (split.length !== 2) {
+    throw new Error('InvalidParam');
+  }
+  const [lat, lng] = split;
+  return {
+    lat: parseFloat(lat),
+    lng: parseFloat(lng),
+  };
 }

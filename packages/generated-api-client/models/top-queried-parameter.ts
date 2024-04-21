@@ -11,7 +11,27 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-export * from "./apis/reporting-api";
-export * from "./apis/status-api";
-export * from "./apis/traffic-cam-api";
-export * from "./apis/weather-forecasts-api";
+
+/**
+ *
+ *
+ * @export
+ * @interface TopQueriedParameter
+ */
+export interface TopQueriedParameter {
+  /**
+   * Queried parameter's value
+   *
+   * @type {string}
+   * @memberof TopQueriedParameter
+   */
+  queriedParameterValue: string;
+
+  /**
+   * Query received count
+   *
+   * @type {number}
+   * @memberof TopQueriedParameter
+   */
+  count: number;
+}

@@ -38,16 +38,21 @@ export const WeatherForecastsApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @param {string} [dateTime]
-     * @param {string} [date]
+     * @param {string} coordinate &lt;lat&gt;,&lt;lng&gt;
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     weatherForecastControllerGet: async (
-      dateTime?: string,
-      date?: string,
+      coordinate: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
+      // verify required parameter 'coordinate' is not null or undefined
+      if (coordinate === null || coordinate === undefined) {
+        throw new RequiredError(
+          "coordinate",
+          "Required parameter coordinate was null or undefined when calling weatherForecastControllerGet.",
+        );
+      }
       const localVarPath = `/weather-forecast`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, "https://example.com");
@@ -63,12 +68,8 @@ export const WeatherForecastsApiAxiosParamCreator = function (
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      if (dateTime !== undefined) {
-        localVarQueryParameter["date_time"] = dateTime;
-      }
-
-      if (date !== undefined) {
-        localVarQueryParameter["date"] = date;
+      if (coordinate !== undefined) {
+        localVarQueryParameter["coordinate"] = coordinate;
       }
 
       const query = new URLSearchParams(localVarUrlObj.search);
@@ -104,14 +105,12 @@ export const WeatherForecastsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @param {string} [dateTime]
-     * @param {string} [date]
+     * @param {string} coordinate &lt;lat&gt;,&lt;lng&gt;
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async weatherForecastControllerGet(
-      dateTime?: string,
-      date?: string,
+      coordinate: string,
       options?: AxiosRequestConfig,
     ): Promise<
       (
@@ -121,7 +120,7 @@ export const WeatherForecastsApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await WeatherForecastsApiAxiosParamCreator(
         configuration,
-      ).weatherForecastControllerGet(dateTime, date, options);
+      ).weatherForecastControllerGet(coordinate, options);
       return (
         axios: AxiosInstance = globalAxios,
         basePath: string = BASE_PATH,
@@ -148,18 +147,16 @@ export const WeatherForecastsApiFactory = function (
   return {
     /**
      *
-     * @param {string} [dateTime]
-     * @param {string} [date]
+     * @param {string} coordinate &lt;lat&gt;,&lt;lng&gt;
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async weatherForecastControllerGet(
-      dateTime?: string,
-      date?: string,
+      coordinate: string,
       options?: AxiosRequestConfig,
     ): Promise<AxiosResponse<WeatherForecastResponse>> {
       return WeatherForecastsApiFp(configuration)
-        .weatherForecastControllerGet(dateTime, date, options)
+        .weatherForecastControllerGet(coordinate, options)
         .then((request) => request(axios, basePath));
     },
   };
@@ -174,19 +171,17 @@ export const WeatherForecastsApiFactory = function (
 export class WeatherForecastsApi extends BaseAPI {
   /**
    *
-   * @param {string} [dateTime]
-   * @param {string} [date]
+   * @param {string} coordinate &lt;lat&gt;,&lt;lng&gt;
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof WeatherForecastsApi
    */
   public async weatherForecastControllerGet(
-    dateTime?: string,
-    date?: string,
+    coordinate: string,
     options?: AxiosRequestConfig,
   ): Promise<AxiosResponse<WeatherForecastResponse>> {
     return WeatherForecastsApiFp(this.configuration)
-      .weatherForecastControllerGet(dateTime, date, options)
+      .weatherForecastControllerGet(coordinate, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
