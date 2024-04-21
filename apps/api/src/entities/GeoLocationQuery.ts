@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { BaseQueryEntity } from './BaseQuery';
+import { BaseQueryEntity } from './abstract/BaseQuery';
 
 @Entity()
 export class GeoLocationQueryEntity extends BaseQueryEntity {
