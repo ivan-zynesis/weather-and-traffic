@@ -12,6 +12,8 @@ import { ReverseGeocodingModule } from './modules/reverse-geocoding/module';
 import { TimeSeriesQueryEntity } from './entities/TimeSeriesQuery';
 import { GeoLocationQueryEntity } from './entities/GeoLocationQuery';
 import { ReportingModule } from './modules/reporting/module';
+import { migrations } from './database/migrations';
+import { ReportingController } from './controllers/reporting/controller';
 
 @Module({
   imports: [
@@ -29,8 +31,8 @@ import { ReportingModule } from './modules/reporting/module';
         username: config.get('db.user'),
         password: config.get('db.password'),
         entities: [TimeSeriesQueryEntity, GeoLocationQueryEntity],
-        // TODO: db migration
-        synchronize: true,
+        migrationsRun: true,
+        migrations,
       }),
       inject: [ConfigService],
     }),
@@ -44,6 +46,7 @@ import { ReportingModule } from './modules/reporting/module';
     StatusController,
     TrafficCamController,
     WeatherForecastController,
+    ReportingController,
   ],
   providers: [],
 })

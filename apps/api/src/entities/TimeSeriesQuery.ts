@@ -1,5 +1,5 @@
 import { Column, Entity, Index } from 'typeorm';
-import { BaseQueryEntity } from './BaseQuery';
+import { BaseQueryEntity } from './abstract/BaseQuery';
 
 @Index('IDX_TimeSeriesQuery-type/selectedDateTime', [
   'type',

@@ -10,8 +10,8 @@ export interface PostgresConfig {
 }
 
 export const DefaultDevPostgresConfig: PostgresConfig = {
-  userName: "DEV_PSQL_USER",
-  password: "DEV_PSQL_PASSWORD",
+  userName: "dev-db-user",
+  password: "dev-db-password",
   port: 5432,
 };
 

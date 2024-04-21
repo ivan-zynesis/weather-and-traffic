@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { BaseQueryEntity } from '../../../entities/BaseQuery';
+import { BaseQueryEntity } from '../../../entities/abstract/BaseQuery';
 
 @Injectable()
 export class RecentQueriesAnalytic {
